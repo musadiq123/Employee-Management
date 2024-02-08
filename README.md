@@ -1,3 +1,4 @@
+ScreenShot Details:
 ![Simulator Screenshot - iPhone 15 Plus - 2024-02-09 at 01 35 11](https://github.com/musadiq123/JetSetGo/assets/39898245/69ec7cc0-1835-48fc-8551-b92e65178b8e)
 ![Simulator Screenshot - iPhone 15 Plus - 2024-02-09 at 01 34 42](https://github.com/musadiq123/JetSetGo/assets/39898245/31a8f561-b471-4a9e-a88b-447d4e858168)
 ![Simulator Screenshot - iPhone 15 Plus - 2024-02-09 at 01 34 25](https://github.com/musadiq123/JetSetGo/assets/39898245/a091f643-1640-41e9-a898-cf3779bd4720)
