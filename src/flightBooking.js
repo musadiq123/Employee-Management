@@ -12,8 +12,6 @@ import {
 import React, {useEffect, useRef, useState, createContext} from 'react';
 import axios from 'axios';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
-import {Picker} from '@react-native-picker/picker';
-import {PaperProvider} from 'react-native-paper';
 import {RadioButton} from 'react-native-paper';
 import {MultipleSelectList} from 'react-native-dropdown-select-list';
 import moment from 'moment';
@@ -29,71 +27,73 @@ const FlightBooking = () => {
 
   const [selected, setSelected] = React.useState('');
   const data = [
-    {key: '1', value: 'JetSpice', },
+    {
+      key: '1',
+      value: 'JetSpice',
+    },
     {key: '2', value: 'Air India'},
   ];
   const [selectedValue, setSelectedValue] = useState('option3');
   const ref = useRef(null);
+
   useEffect(() => {
     getFlights();
-
   }, []);
 
   const renderItem = ({item}) => {
     const data = item?.displayData;
-    const airline = data?.airlines[0]
+    const airline = data?.airlines[0];
     const png =
-      airline?.airlineCode == 'CD' &&
-      airline?.flightNumber == '4567'
+      airline?.airlineCode == 'CD' && airline?.flightNumber == '4567'
         ? require('../flight3.png')
         : require('../flight2.png');
     return (
       <View style={[styles?.itemWrapperStyle, {height: ITEM_HEIGHT}]}>
         <Image style={styles?.image} source={png} />
-        {/* <View style={styles?.contentWrapperStyle}>
-          <Text
-            style={
-              styles?.txtNameStykes
-            }>{`${data?.source?.airport?.cityName} - ${data?.destination?.airport?.cityName}`}</Text>
-          <Text
-            numberOfLines={1}
-            style={
-              styles?.txtNameStykes
-            }>{`Rs ${item?.fare?.toLocaleString()}`}</Text>
-        </View> */}
-        <TouchableOpacity key={data.id} style={{ flex:1 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <TouchableOpacity key={data.id} style={{flex: 1}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
-              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{airline.airlineName}</Text>
-              <Text style={{ fontSize: 14 }}>Flight #{airline.flightNumber}</Text>
-              <Text style={{ fontSize: 14 }}>
-                {data?.source?.airport?.cityName} ({data?.source?.airport?.cityCode}) - {data?.destination?.airport?.cityName} ({data?.destination?.airport?.cityCode}) 
-                
+              <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+                {airline.airlineName}
               </Text>
-              <Text style={{ fontSize: 14 }}>
-                {moment(data?.source?.depTime).format('LT')} -  {moment(data?.destination?.arrTime).format('LT') + " "+data?.totalDuration}
+              <Text style={{fontSize: 14}}>Flight #{airline.flightNumber}</Text>
+              <Text style={{fontSize: 14}}>
+                {data?.source?.airport?.cityName} (
+                {data?.source?.airport?.cityCode}) -{' '}
+                {data?.destination?.airport?.cityName} (
+                {data?.destination?.airport?.cityCode})
               </Text>
-              <Text style={{ fontSize: 14 }}>
-                Duration: <Text style={{ fontSize: 14, fontWeight: '600' }}>{data?.totalDuration}</Text>
+              <Text style={{fontSize: 14}}>
+                {moment(data?.source?.depTime).format('LT')} -{' '}
+                {moment(data?.destination?.arrTime).format('LT') +
+                  ' ' +
+                  data?.totalDuration}
+              </Text>
+              <Text style={{fontSize: 14}}>
+                Duration:{' '}
+                <Text style={{fontSize: 14, fontWeight: '600'}}>
+                  {data?.totalDuration}
+                </Text>
               </Text>
             </View>
             <View>
-              <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'green' }}>₹ {item?.fare?.toLocaleString()}</Text>
-              <Text style={{ fontSize: 14 }}>Book Now</Text>
+              <Text style={{fontSize: 16, fontWeight: 'bold', color: 'green'}}>
+                ₹ {item?.fare?.toLocaleString()}
+              </Text>
+              <Text style={{fontSize: 14}}>Book Now</Text>
             </View>
           </View>
-          {/* <View style={{ height: 1, backgroundColor: 'gray', marginVertical: 8 }} /> */}
         </TouchableOpacity>
       </View>
     );
   };
 
-  const getFlights = async() => {
+  const getFlights = async () => {
     setLoading(true);
-    fullData = []
+    fullData = [];
     await axios.get(`https://api.npoint.io/4829d4ab0e96bfab50e7`).then(res => {
       setUsers(res?.data?.data?.result);
-      fullData = res?.data?.data?.result
+      fullData = res?.data?.data?.result;
       setLoading(false);
     });
   };
@@ -154,29 +154,27 @@ const FlightBooking = () => {
     );
   };
 
-  const filterAirline = async()=> {
-
-    let filteredAirline = fullData.filter((data) => selected.length>0?selected.includes(data?.displayData?.airlines[0]?.airlineName):true);    
+  const filterAirline = async () => {
+    let filteredAirline = fullData.filter(data =>
+      selected.length > 0
+        ? selected.includes(data?.displayData?.airlines[0]?.airlineName)
+        : true,
+    );
     setUsers(filteredAirline);
-  }
+  };
 
   return (
-    // <PaperProvider>
     <SafeAreaView style={{flex: 1}}>
       <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
         <Button
           title="Sort"
           onPress={() => {
-            // ref?.current?.scrollToIndex({
-            //   index: 0,
-            // });
             bottomsortref.current.show();
           }}
         />
         <Button
           title="Filter"
           onPress={() => {
-            // ref?.current?.scrollToEnd();
             bottomfilterref.current.show();
           }}
         />
@@ -200,23 +198,42 @@ const FlightBooking = () => {
       </BottomSheet>
 
       {/* fliter */}
-      <BottomSheet hasDraggableIcon ref={bottomfilterref} height={500}>
+      <BottomSheet hasDraggableIcon ref={bottomfilterref} height={350}>
         <View style={{margin: 20}}>
           <MultipleSelectList
             setSelected={val => setSelected(val)}
             data={data}
+            ref={ref}
             save="value"
             onSelect={() => filterAirline()}
             label="Airlines"
-            selectedItems={selected}
-            style={{margin: 10}}
-            // defaultOption={{key: '1', value: 'JetSpice'}}
+            style={{margin: 10}} // style for the container of checkboxes            
+          />
+          <Button
+            title="Done"
+            style={{
+              margin: 10,
+              padding: 10,
+              backgroundColor: '#48BBEC',
+              color: '#fff',
+              borderRadius: 5,
+              textAlign: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+              width: 100,
+              height: 40,
+            }}
+            onPress={() => {
+              // ref?.current?.scrollToIndex({
+              //   index: 0,
+              // });
+              bottomfilterref.current.close();
+            }}
           />
         </View>
-        {selected?.length>0 && selected?.map((i)=>{return (<Text>{i}</Text>)})}
       </BottomSheet>
     </SafeAreaView>
-    // </PaperProvider>
   );
 };
 const styles = StyleSheet.create({
@@ -247,11 +264,8 @@ const styles = StyleSheet.create({
   },
   sortByContainer: {
     flex: 1,
-    // justifyContent:'space-between',
-    // flexDirection:'row',
   },
   sortByTopContainer: {
-    // flex:1,
     justifyContent: 'space-between',
     flexDirection: 'row',
     margin: 10,
@@ -261,8 +275,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignSelf: 'center',
     fontWeight: '500',
-
-    // flex:1
   },
   sortByBtn: {
     fontSize: 18,
@@ -272,7 +284,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   sortByPicker: {},
-  //sort
   container: {
     flex: 1,
     backgroundColor: '#F5F5F5',
@@ -282,7 +293,6 @@ const styles = StyleSheet.create({
   radioGroup: {
     flexDirection: 'column',
     alignItems: 'flex-start',
-    // flex:1,
     justifyContent: 'space-around',
     // marginTop: 20,
     borderRadius: 8,
