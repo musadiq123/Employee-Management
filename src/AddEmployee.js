@@ -1,4 +1,12 @@
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Alert,
+  Button,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -12,6 +20,50 @@ export default function AddEmployee({
   const [age, setAge] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [ageError, setAgeError] = useState('');
+  const [addressError, setAddressError] = useState('');
+  const [cityError, setCityError] = useState('');
+
+
+  const handleAddEmployee = () => {
+    if (!name) {
+      setNameError('Name is required');
+    } else if (name.length < 3) {
+      setNameError('Name must be at least 3 characters long');
+    } else {
+      setNameError('');
+    }
+
+    if (!age) {
+      setAgeError('Age is required');
+    } else if (isNaN(age)) {
+      setAgeError('Age must be a number');
+    } else {
+      setAgeError('');
+    }
+
+    if (!address) {
+      setAddressError('Address line is required');
+    } else if (address.length < 2) {
+      setAddressError('Address line must be at least 2 characters long');
+    } else {
+      setAddressError('');
+    }
+
+    if (!city) {
+      setCityError('City is required');
+    } else if (city.length < 3) {
+      setCityError('City must be at least 3 characters long');
+    } else {
+      setCityError('');
+    }
+
+    if (!nameError && !ageError && !addressError && !cityError) {
+      addEmployee()
+    }
+  };
+
 
   const addEmployee = async () => {
     if (!name || !age || !address || !city) {
@@ -44,19 +96,76 @@ export default function AddEmployee({
     }
   };
   return (
-    <View style={{flex: 1, borderWidth: 0.2}}>
-      <TextInput placeholder="Name" value={name} onChangeText={setName} />
-      <TextInput placeholder="Age" value={age} onChangeText={setAge} />
+    <SafeAreaView
+      style={{
+        flex: 1,
+        borderWidth: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Text
+        style={{
+          fontSize: 20,
+          justifyContent: 'center',
+          alignSelf: 'center',
+          fontWeight: 'bold',
+        }}>
+        Add Employee
+      </Text>
+      <TextInput
+        placeholder="Name"
+        value={name}
+        onChangeText={setName}
+        style={[styles.border, styles.width]}
+      />
+      {nameError && <Text style={styles.error}>{nameError}</Text>}
+
+      <TextInput
+        placeholder="Age"
+        value={age}
+        keyboardType='numeric'
+        onChangeText={setAge}
+        style={[styles.border, styles.width]}
+      />
+      {ageError && <Text stle={styles.error}>{ageError}</Text>}
+
       <TextInput
         placeholder="Address"
         value={address}
         onChangeText={setAddress}
+        style={[styles.border, styles.width]}
       />
-      <TextInput placeholder="City" value={city} onChangeText={setCity} />
-      <Button title="Add" onPress={addEmployee} />
+      {addressError && <Text style={styles.error}>{addressError}</Text>}
+
+      <TextInput
+        placeholder="City"
+        value={city}
+        onChangeText={setCity}
+        style={[styles.border, styles.width]}
+      />
+      {cityError && <Text style={styles.error}>{cityError}</Text>}
+
+      <Button
+        title="Add"
+        onPress={handleAddEmployee}
+        style={[styles.border, styles.width]}
+      />
       <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
-    </View>
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  border: {
+    borderWidth: 0.2,
+  },
+  width: {
+    width: 400,
+    height: 50,
+  },
+  error: {
+    color: 'red',
+    marginTop: 5,
+  },
+
+});

@@ -52,6 +52,7 @@ export default function EmployeeList() {
   }
   return (
     <View style={{flex: 1}}>
+      <Text style={{fontSize:20, justifyContent:'center', flex:1, alignSelf:'center'}}>Employee List</Text>
       <Button title="Add Employee" onPress={() => setIsModalVisible(true)} />
       <FlatList
         data={employees}
