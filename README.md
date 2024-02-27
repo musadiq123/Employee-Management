@@ -1,10 +1,4 @@
 ScreenShot Details:
-![Simulator Screenshot - iPhone 15 Plus - 2024-02-09 at 01 35 11](https://github.com/musadiq123/JetSetGo/assets/39898245/69ec7cc0-1835-48fc-8551-b92e65178b8e)
-![Simulator Screenshot - iPhone 15 Plus - 2024-02-09 at 01 34 42](https://github.com/musadiq123/JetSetGo/assets/39898245/31a8f561-b471-4a9e-a88b-447d4e858168)
-![Simulator Screenshot - iPhone 15 Plus - 2024-02-09 at 01 34 25](https://github.com/musadiq123/JetSetGo/assets/39898245/a091f643-1640-41e9-a898-cf3779bd4720)
-![Simulator Screenshot - iPhone 15 Plus - 2024-02-09 at 01 34 21](https://github.com/musadiq123/JetSetGo/assets/39898245/fcf1d511-1e19-4973-a92f-968918801521)
-![Simulator Screenshot - iPhone 15 Plus - 2024-02-09 at 01 34 10](https://github.com/musadiq123/JetSetGo/assets/39898245/0afa7464-2ce0-4108-8801-0f1a21efcaf4)
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
 
