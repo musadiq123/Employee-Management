@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.2,
   },
   width: {
-    width: 400,
+    width: 300,
     height: 50,
   },
   error: {
